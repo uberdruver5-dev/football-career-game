@@ -1,0 +1,1163 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Cache-Control" content="no-cache, no-store, must-revalidate">
+  <meta http-equiv="Pragma" content="no-cache">
+  <meta http-equiv="Expires" content="0">
+  <title>Football Player Career Mode</title>
+  
+  <!-- Fonts & CSS -->
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;800;900&family=Outfit:wght@500;700;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css?v=3.0.0">
+  <link rel="stylesheet" href="css/mobile.css?v=1.6.0">
+
+</head>
+<body>
+
+
+  <div id="main-menu">
+    <!-- Version Counter & Hover Changelog Tooltip -->
+    <div class="menu-version-container">
+      <span class="menu-version-badge">v3.0.0</span>
+      <div class="menu-version-tooltip">
+        <h4 style="color: var(--primary); margin: 0 0 10px 0; font-size: 15px; font-weight: 900; border-bottom: 1px solid rgba(255,255,255,0.15); padding-bottom: 6px;">📂 Game Updates (Changelog v3.0.0)</h4>
+        <ul style="padding-left: 16px; margin: 0; font-size: 12px; color: #e2e8f0; line-height: 1.6; text-align: left; list-style-type: disc;">
+          <li><strong style="color: #00ff88;">v3.0.0 — MANAGER MODE 🎮👔:</strong> New game mode! Create a manager (age 35-50, season 2000-01 → 2026-27, club budget recommendation per season, random Manager Score 1-99 that boosts your team). Tabs: Dashboard (team season summary + profit), Team (Stats + Formation with OVR tiles, reserve swapping, hover tooltips), Player Signing (search with market value/age/position/OVR filters, full player stats incl. career history & trophies, contract offers with acceptance chances), Sponsors (sponsors paying you with win bonus/loss cut, plus 50 sponsors you can pay for attendance boosts), Stadium (upgrades: capacity/ticket/drink/food/parking/attention/maintenance with revenue & costs), Games & Standings. Separate save slots.</li>
+          <li><strong style="color: #00ff88;">v2.2.0:</strong> REAL FIX for the dashboard overflow — the grid computed an intrinsic width ~2300px (bigger than the screen), which clipped the Season Summary. The grid is now hard-capped to 100% width, so card + simulate match + season summary always fit in one row on any desktop screen.</li>
+          <li><strong style="color: #00ff88;">v2.1.6:</strong> Season Summary panel width capped (~460px, anchored right) so the stat rows no longer stretch across a huge empty gap — the dashboard always fits on desktop screens.</li>
+          <li><strong style="color: #00ff88;">v2.1.5:</strong> Season Summary panel made ~50px shorter (compact padding, tighter rows) — same fonts and content.</li>
+          <li><strong style="color: #00ff88;">v2.1.4:</strong> Dashboard: gaps between the three sections halved (24px → 12px) and the simulate-match rectangle made 20px smaller via its padding — text and button inside unchanged.</li>
+          <li><strong style="color: #00ff88;">v2.1.3:</strong> Dashboard: next-match panel now hugs the player card on the left (content-sized, no dead space) and the Season Summary takes the full right side — exactly per the annotated layout.</li>
+          <li><strong style="color: #00ff88;">v2.1.2:</strong> Dashboard: next-match column now fixed at a reasonable width (can no longer balloon and push the Season Summary off-screen) — all three panels sit side by side on normal desktops.</li>
+          <li><strong style="color: #00ff88;">v2.1.1:</strong> Dashboard layout fixed for real — the Season Summary now wraps below the card & next-match panels on narrower windows (never clipped), and the next-match panel width relaxed so it is only gently narrowed from the sides.</li>
+          <li><strong style="color: #00ff88;">v2.1.0:</strong> Dashboard next-match panel capped in width so the Season Summary is always visible; NEW: bench contracts from superclubs (Real Madrid, Man City, Barcelona, Bayern, PSG, Liverpool, Arsenal, Inter, Juventus, Atlético, Dortmund) once you reach 80 OVR — sign and you join as a bench player until your OVR passes their starter threshold.</li>
+          <li><strong style="color: #00ff88;">v2.0.9:</strong> Hair height increased — haircuts now keep their full natural length (no more squashed/flat hair) with width matching the head.</li>
+          <li><strong style="color: #00ff88;">v2.0.8:</strong> Hair styles re-proportioned — width now matches the head and height restored, so all haircuts keep their natural length (no more flat wide caps).</li>
+          <li><strong style="color: #00ff88;">v2.0.7:</strong> Head scaled down ~30% (same silhouette ratio) so it no longer fills the whole card; facial features kept larger relative to the head.</li>
+          <li><strong style="color: #00ff88;">v2.0.6:</strong> FIXED — hair styles no longer cover the eyes (hair now sits correctly on the scalp).</li>
+          <li><strong style="color: #00ff88;">v2.0.5:</strong> Head scaled down (same shape ratio) and facial features (eyes, mouth) enlarged so the face reads clearly.</li>
+          <li><strong style="color: #00ff88;">v2.0.4:</strong> Head now uses the exact silhouette from the reference image (rounded top, straight sides, tapered bust) with small eyes and a curved smile.</li>
+          <li><strong style="color: #00ff88;">v2.0.3:</strong> Head refined — rounder silhouette, smaller eyes, small curved smile.</li>
+          <li><strong style="color: #00ff88;">v2.0.2:</strong> Player head redesigned to match the reference style — solid black round eyes and solid wide mouth (flat cartoon look).</li>
+          <li><strong style="color: #00ff88;">v2.0.1:</strong> Player head restyled to the minimal reference design — smooth rounded head, simple dot eyes, small smile (no ears/nose).</li>
+          <li><strong style="color: #00ff88;">v2.0.0:</strong> National tournaments moved to the end of the season; Ballon d'Or rebalance (88 OVR entry + fair scoring); realistic GK saves (shots minus goals); shot-count curve; rating penalties for bad games; contract offer negotiation; fixed social media followers/rankings; elimination-based leaderboard match counts; Appearance folder for custom player models; UI overflow fixes.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="menu-logo">⚽</div>
+    <div class="menu-title">Career Mode FC</div>
+    <div class="menu-subtitle">Player Career Simulation</div>
+    <div class="menu-buttons">
+      <button class="menu-btn btn-play" onclick="app.menuPlay()">▶ Play</button>
+      
+    </div>
+  </div>
+
+  <!-- PLAY MODE SELECT -->
+  <div class="menu-panel" id="panel-play-modes">
+    <div class="menu-panel-title">⚽ Select Game Mode</div>
+    <div class="menu-panel-content">
+      <div class="menu-buttons">
+        <button class="menu-btn" onclick="app.menuCareerMode()">🏆 Career Mode</button>
+        <button class="menu-btn" onclick="managerUI.menuManagerMode()">👔 Manager Mode</button>
+        <button class="menu-btn disabled">🌐 Online <span class="coming-soon-tag">Coming Soon</span></button>
+      </div>
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-play-modes')">← Back</button>
+  </div>
+
+  <!-- CAREER MODE: NEW GAME / SAVES -->
+  <div class="menu-panel" id="panel-career">
+    <div class="menu-panel-title">🏆 Career Mode</div>
+    <div class="menu-panel-content">
+      <div class="menu-buttons">
+        <button class="menu-btn btn-play" onclick="app.menuNewGame()">🆕 New Game</button>
+        <button class="menu-btn" onclick="app.menuLoadSaves()">💾 Load Save</button>
+      </div>
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-career')">← Back</button>
+  </div>
+
+  <!-- MANAGER MODE: NEW GAME / SAVES -->
+  <div class="menu-panel" id="panel-manager">
+    <div class="menu-panel-title">👔 Manager Mode</div>
+    <div class="menu-panel-content">
+      <div class="menu-buttons">
+        <button class="menu-btn btn-play" onclick="managerUI.menuManagerNewGame()">🆕 New Game</button>
+        <button class="menu-btn" onclick="managerUI.menuManagerLoadSaves()">💾 Load Save</button>
+      </div>
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-manager')">← Back</button>
+  </div>
+
+  <!-- MANAGER SAVES LIST -->
+  <div class="menu-panel" id="panel-manager-saves">
+    <div class="menu-panel-title">💾 Manager Saved Games</div>
+    <div class="menu-panel-content" id="manager-saves-list-container">
+      <!-- Populated by JS -->
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-manager-saves')">← Back</button>
+  </div>
+
+  <!-- SAVES LIST -->
+  <div class="menu-panel" id="panel-saves">
+    <div class="menu-panel-title">💾 Saved Games</div>
+    <div class="menu-panel-content" id="saves-list-container">
+      <!-- Populated by JS -->
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-saves')">← Back</button>
+  </div>
+
+  <!-- SETTINGS PANEL -->
+  <div class="menu-panel" id="panel-settings-menu">
+    <div class="menu-panel-title">⚙️ Game Settings</div>
+    <div class="menu-panel-content">
+      <div class="glass-panel">
+        <div class="form-group">
+          <label class="form-label">Match Half Duration</label>
+          <select class="form-select" id="menu-setting-half" onchange="app.matchSettings.halfLength = parseInt(this.value)">
+            <option value="1">1 Minute per Half (Fast)</option>
+            <option value="3" selected>3 Minutes per Half (Balanced)</option>
+            <option value="5">5 Minutes per Half (Full)</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Camera Angle View</label>
+          <select class="form-select" id="menu-setting-camera" onchange="app.matchSettings.cameraMode = this.value">
+            <option value="broadcast" selected>Broadcast (Classic Side TV)</option>
+            <option value="pro">Pro Camera (3rd Person Behind Player)</option>
+            <option value="tactical">Tactical (Top-Down Overhead)</option>
+          </select>
+        </div>
+        <button class="btn btn-secondary" style="width:100%;margin-top:10px;" onclick="app.resetSettings()">🔄 Reset Settings to Default</button>
+      </div>
+    </div>
+    <button class="menu-back-btn" onclick="app.menuBack('panel-settings-menu')">← Back</button>
+  </div>
+
+  <div id="app-container" style="display:none;">
+
+    <!-- Top Navigation Header -->
+    <header class="header-bar">
+      <div class="logo-section">
+        <span class="logo-icon">⚽</span>
+        <span class="logo-title">CAREER MODE FC</span>
+      </div>
+
+      <div class="career-meta">
+        <div class="meta-pill"><span id="meta-player-name">Jack Sterling 🇬🇧</span></div>
+        <div class="meta-pill"><span id="meta-age">18 y/o</span></div>
+        <div class="meta-pill"><span id="meta-ovr">OVR 72</span></div>
+        <div class="meta-pill"><span id="meta-club">Plymouth Argyle</span></div>
+        <div class="meta-pill gold">💰 <span id="meta-bank">$10,000</span></div>
+        
+        <!-- The Blue Level Bar -->
+        <div id="level-bar-container" style="display: flex; align-items: center; gap: 4px; margin-left: 8px; font-family: 'Outfit', sans-serif;">
+          <!-- Level Circle -->
+          <div id="level-circle" style="width: 34px; height: 34px; border-radius: 50%; background: #ffffff; border: 3px solid #0088ff; display: flex; align-items: center; justify-content: center; color: #000000; font-weight: 900; font-size: 15px; box-shadow: 0 0 10px rgba(0, 136, 255, 0.4); z-index: 2;">
+            0
+          </div>
+          <!-- Long XP Bar -->
+          <div id="xp-bar-outer" style="width: 140px; height: 22px; border-radius: 11px; background: rgba(0, 0, 0, 0.6); border: 3px solid #0088ff; overflow: hidden; position: relative; display: flex; align-items: center; box-shadow: 0 0 10px rgba(0, 136, 255, 0.3); margin-left: -6px;">
+            <!-- Fill Area (White) -->
+            <div id="xp-bar-inner" style="width: 0%; height: 100%; background: #ffffff; transition: width 0.4s ease;"></div>
+            <!-- Text overlay (Grey with Black shadow for perfect contrast on any background) -->
+            <div id="xp-bar-text" style="position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; color: #e2e8f0; text-shadow: 1px 1px 2px #000000, -1px -1px 2px #000000, 1px -1px 2px #000000, -1px 1px 2px #000000; font-weight: 900; font-size: 10px; z-index: 3;">
+              0 / 1000 XP
+            </div>
+          </div>
+        </div>
+      </div>
+    </header>
+
+    <!-- Navigation Tabs -->
+    <nav class="nav-tabs" id="nav-tabs">
+      <button class="tab-btn active" data-tab="dashboard">🏠 Dashboard</button>
+      <button class="tab-btn" data-tab="games">🗓️ Games</button>
+      <button class="tab-btn" data-tab="standings">🏆 Standings</button>
+      <button class="tab-btn" data-tab="squad">👥 Squads</button>
+      <button class="tab-btn" data-tab="transfers">📄 Club Contracts</button>
+      <button class="tab-btn" data-tab="sponsors">🤝 Sponsors</button>
+      <button class="tab-btn" data-tab="social">📱 Social Media</button>
+      <button class="tab-btn" data-tab="skills">💪 Skills</button>
+      <button class="tab-btn" data-tab="comparison">📊 Stats Leaderboard</button>
+      <button class="tab-btn" data-tab="stats">📊 Career Stats</button>
+      <button class="tab-btn" data-tab="trophies">🏆 Trophies</button>
+      <button class="tab-btn" data-tab="multipliers">📈 Multipliers</button>
+      <button class="tab-btn" data-tab="ballon">👑 Ballon d'Or</button>
+      <button class="tab-btn" data-tab="pastseasons">📜 Past Seasons</button>
+      <button class="tab-btn" data-tab="settings">⚙️ Settings</button>
+    </nav>
+
+    <!-- Manager Mode Navigation Tabs -->
+    <nav id="manager-nav" class="nav-tabs" style="display:none;">
+      <button class="tab-btn m-tab-btn active" data-mtab="dashboard">🏠 Dashboard</button>
+      <button class="tab-btn m-tab-btn" data-mtab="team">👥 Team</button>
+      <button class="tab-btn m-tab-btn" data-mtab="signings">✍️ Player Signing</button>
+      <button class="tab-btn m-tab-btn" data-mtab="sponsors">🤝 Sponsors</button>
+      <button class="tab-btn m-tab-btn" data-mtab="stadium">🏟️ Stadium</button>
+      <button class="tab-btn m-tab-btn" data-mtab="games">🗓️ Games</button>
+      <button class="tab-btn m-tab-btn" data-mtab="standings">🏆 Standings</button>
+      <button class="tab-btn m-tab-btn" data-mtab="settings" style="margin-left:auto;" onclick="managerUI.exitToMenu()">🏠 Main Menu</button>
+    </nav>
+
+    <!-- Main View Content Pages -->
+    <main class="main-view">
+
+      <!-- PAGE: DASHBOARD -->
+      <section id="page-dashboard" class="view-page active">
+        <div class="grid-dashboard">
+          
+          <!-- Column 1: FIFA Player Card -->
+          <div>
+            <div class="fifa-card gold-rare">
+              <div class="fifa-card-header">
+                <div>
+                  <div class="ovr-rating" id="card-ovr">72</div>
+                  <div class="position-tag" id="card-pos">ST</div>
+                </div>
+                <div class="nation-flag" id="card-flag">🇬🇧</div>
+              </div>
+
+              <div class="player-avatar-preview">
+                <div id="card-avatar-display"></div>
+              </div>
+
+              <div class="player-name-banner" id="card-name">ALEX HUNTER</div>
+
+              <div class="attributes-grid">
+                <div class="attr-item"><span>PAC</span><span class="attr-val" id="card-attr-pac">75</span></div>
+                <div class="attr-item"><span>DRI</span><span class="attr-val" id="card-attr-dri">74</span></div>
+                <div class="attr-item"><span>SHO</span><span class="attr-val" id="card-attr-sho">72</span></div>
+                <div class="attr-item"><span>DEF</span><span class="attr-val" id="card-attr-def">45</span></div>
+                <div class="attr-item"><span>PAS</span><span class="attr-val" id="card-attr-pas">68</span></div>
+                <div class="attr-item"><span>PHY</span><span class="attr-val" id="card-attr-phy">70</span></div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Column 2: Next Match & Center Feed -->
+          <div>
+            <!-- Next Match Banner -->
+            <div class="glass-panel" id="next-match-box">
+              <!-- Dynamically populated via JS -->
+            </div>
+          </div>
+
+          <!-- Column 3: Quick Season Summary -->
+          <div>
+            <div class="glass-panel">
+              <div class="panel-header">
+                <h3 class="panel-title">🎯 Season Summary</h3>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>Matches Played:</span><strong style="color: var(--accent-gold);" id="stat-season-matches">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>Goals Scored:</span><strong style="color: var(--primary);" id="stat-season-goals">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px; display: none;" id="stat-season-hattricks-row">
+                <span>Hattricks Scored:</span><strong style="color: var(--accent-gold);" id="stat-season-hattricks">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between; margin-bottom: 6px;">
+                <span>Assists:</span><strong style="color: var(--accent-blue);" id="stat-season-assists">0</strong>
+              </div>
+              <div style="display:none; justify-content:space-between; margin-bottom:6px;" id="stat-season-role-row">
+                <span id="stat-season-role-label">Defensive Actions:</span><strong style="color:var(--accent-gold);" id="stat-season-role-value">0</strong>
+              </div>
+              <div style="display: flex; justify-content: space-between;">
+                <span>Avg Match Rating:</span><strong style="color: var(--accent-gold);" id="stat-season-rating">0.0</strong>
+              </div>
+            </div>
+          </div>
+
+        </div>
+      </section>
+
+      <!-- PAGE: GAMES -->
+      <section id="page-games" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🗓️ Future Games This Season</h3>
+          </div>
+          <div id="games-schedule-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: STANDINGS -->
+      <section id="page-standings" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <h3 class="panel-title">🏆 Competition Standings</h3>
+            <div>
+              <label style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-right: 8px;">Select Event:</label>
+              <select class="form-select" id="standings-competition-select" onchange="app.onStandingsCompetitionChange(this.value)" style="width: auto; display: inline-block; padding: 6px 12px; font-size: 13px; min-width: 180px;">
+                <option value="league" selected>🏠 League Standings</option>
+                <option value="cup">🏆 Domestic Cup Group</option>
+                <option value="ucl">🌍 Champions League Group</option>
+              </select>
+            </div>
+          </div>
+          <div class="table-wrapper">
+            <table class="data-table standings-table">
+              <thead>
+                <tr>
+                  <th>Pos</th>
+                  <th>Club</th>
+                  <th>P</th>
+                  <th>W</th>
+                  <th>D</th>
+                  <th>L</th>
+                  <th>GD</th>
+                  <th>PTS</th>
+                </tr>
+              </thead>
+              <tbody id="table-standings-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: SQUAD -->
+      <section id="page-squad" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header" style="margin-bottom: 12px;">
+            <h3 class="panel-title">👥 Team Rosters & Player Stats</h3>
+          </div>
+          
+          <!-- Selector for Club vs National Team -->
+          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:12px;">
+            <span style="font-size:13px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">👥 Roster Category:</span>
+            <select id="squad-category-select" onchange="app.onSquadCategoryChange(this.value)" class="btn btn-secondary btn-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff; width:220px; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer; height:34px;">
+              <option value="club" selected>🏢 Club Roster</option>
+              <option value="national">🌍 National Team</option>
+            </select>
+          </div>
+
+          <!-- Selector for Squad Team Select & Search Bar -->
+          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:12px; border-bottom:1px solid rgba(255,255,255,0.06); padding-bottom:12px;">
+            <span id="squad-search-label" style="font-size:13px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">🔍 Select Club Roster:</span>
+            <div style="display:flex; gap:10px; align-items:center; flex-wrap:wrap;">
+              <input type="text" id="squad-team-search" placeholder="Type to filter clubs..." oninput="app.filterSquadClubs(this.value)" class="form-input" style="width:160px; padding:6px 12px; font-size:12px; border-radius:8px; height:34px; margin:0; background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff;">
+              <select id="squad-team-select" onchange="app.renderSquad()" class="btn btn-secondary btn-sm" style="background:rgba(12,21,36,0.85); border:1px solid rgba(255,255,255,0.15); color:#fff; width:220px; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer; height:34px;">
+                <!-- Options populated dynamically via JS -->
+              </select>
+            </div>
+          </div>
+          
+          <!-- Selector for Squad Stats View -->
+          <div style="margin-bottom:14px; display:flex; justify-content:space-between; align-items:center; flex-wrap:wrap; gap:10px;">
+            <span style="font-size:13px; color:var(--text-muted); font-weight:700; text-transform:uppercase; letter-spacing:0.5px;">📊 Player Performance Stats:</span>
+            <select id="squad-stats-select" onchange="app.renderSquad()" class="btn btn-secondary btn-sm" style="background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.12); color:#fff; width:180px; padding:6px 12px; border-radius:8px; font-weight:700; cursor:pointer;">
+              <option value="season" selected>Overall Season</option>
+              <option value="league">League</option>
+              <option value="ucl">Champions League</option>
+              <option value="cup">Domestic Cup</option>
+            </select>
+          </div>
+
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Position</th>
+                  <th>Player Name</th>
+                  <th>OVR</th>
+                  <th>Age</th>
+                  <th style="text-align:center; color:var(--accent-gold);">Matches</th>
+                  <th style="text-align:center; color:var(--primary);">Goals</th>
+                  <th style="text-align:center; color:var(--accent-blue);">Assists</th>
+                  <th style="text-align:center; color:var(--accent-gold);">Role Stat</th>
+                </tr>
+              </thead>
+              <tbody id="table-squad-body">
+                <!-- Populated via JS -->
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: TRANSFERS & CONTRACTS -->
+      <section id="page-transfers" class="view-page">
+        <div class="panel-header">
+          <h3 class="panel-title">📄 Club Contracts with Bonuses & Salary</h3>
+        </div>
+        <div id="transfers-offers-list">
+          <!-- Populated via JS -->
+        </div>
+      </section>
+
+      <!-- PAGE: SOCIAL MEDIA -->
+      <section id="page-social" class="view-page"><div class="glass-panel"><div class="panel-header"><h3 class="panel-title">📱 Football Social</h3></div><div id="social-content"></div></div></section>
+
+      <!-- PAGE: SPONSORS -->
+      <section id="page-sponsors" class="view-page"><div class="glass-panel"><div class="panel-header"><h3 class="panel-title">🤝 Player Sponsors</h3></div><p style="color:var(--text-muted);line-height:1.6;margin-bottom:18px;">After your first match, ten companies compete to sponsor you. Performance changes their offers; signing locks you to that sponsor for the agreed seasons.</p><div id="sponsors-content"></div></div></section>
+
+      <!-- PAGE: SKILLS (TRAINING & UPGRADES) -->
+      <section id="page-skills" class="view-page">
+        <!-- Attributes Upgrade list -->
+        <div class="glass-panel">
+          <div class="panel-header" style="justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+            <h3 class="panel-title">⭐ Attributes & Skill Upgrades</h3>
+            <div>Available Skill Points: <strong style="color: var(--primary); font-size: 20px;" id="available-sp">5</strong></div>
+          </div>
+          <div id="attributes-upgrade-list">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: COMPARISON (STATS LEADERBOARD) -->
+      <section id="page-comparison" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header" style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 14px;">
+            <h3 class="panel-title">📊 Competition Stats & Rankings</h3>
+            <div>
+              <label style="font-size: 13px; font-weight: 700; color: var(--text-muted); margin-right: 8px;">Competition:</label>
+              <select class="form-select" id="comparison-competition-select" onchange="app.onComparisonCompetitionChange(this.value)" style="width: auto; display: inline-block; padding: 6px 12px; font-size: 13px; min-width: 180px;">
+                <option value="league" selected>🏠 Current Season League</option>
+                <option value="season">📅 Overall Season Campaign</option>
+                <option value="cup">🏆 Domestic Cup</option>
+                <option value="ucl">🌍 Champions League</option>
+                <option value="world_cup">🌍 FIFA World Cup</option>
+                <option value="euro">🇪🇺 UEFA Euro Cup</option>
+                <option value="copa">🌎 Copa America</option>
+                <option value="afcon">🌍 Africa Cup (AFCON)</option>
+              </select>
+            </div>
+          </div>
+          
+          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 10px;">
+            <!-- Goal Scorers -->
+            <div class="glass-panel" style="padding: 16px;">
+              <h4 style="font-size: 16px; font-weight: 800; color: var(--primary); margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">🎯 Top 20 Goal Scorers</h4>
+              <div style="overflow-x: auto;">
+                <table class="data-table" style="font-size: 12px;">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">Pos</th>
+                      <th>Player</th>
+                      <th>Club</th>
+                      <th style="width: 40px; text-align: center;">P</th>
+                      <th style="width: 40px; text-align: center; color: var(--primary);">G</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-scorers-body">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+
+            <!-- Assisters -->
+            <div class="glass-panel" style="padding: 16px;">
+              <h4 style="font-size: 16px; font-weight: 800; color: var(--accent-blue); margin-bottom: 14px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 8px; display: flex; align-items: center; gap: 8px;">⚽ Top 20 Assisters</h4>
+              <div style="overflow-x: auto;">
+                <table class="data-table" style="font-size: 12px;">
+                  <thead>
+                    <tr>
+                      <th style="width: 40px; text-align: center;">Pos</th>
+                      <th>Player</th>
+                      <th>Club</th>
+                      <th style="width: 40px; text-align: center;">P</th>
+                      <th style="width: 40px; text-align: center; color: var(--accent-blue);">A</th>
+                    </tr>
+                  </thead>
+                  <tbody id="table-assisters-body">
+                    <!-- Populated via JS -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: STATS & FINANCES -->
+      <section id="page-stats" class="view-page">
+        <div id="age-decay-warning" class="age-decay-badge" style="display: none;">
+          ⚠️ <strong>AGEING MECHANIC ACTIVE:</strong> Player is 34+ years old. Physical attributes (Pace, Physical) decay over time.
+        </div>
+
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">📊 Career Records & Total Net Worth</h3>
+          </div>
+          <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px; text-align: center;">
+            <div class="glass-panel">
+              <div style="font-size: 13px; color: var(--text-muted);">TOTAL MATCHES</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--accent-blue);" id="stat-career-matches">0</div>
+            </div>
+            <div class="glass-panel">
+              <div style="font-size: 13px; color: var(--text-muted);">CAREER GOALS</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--primary);" id="stat-career-goals">0</div>
+            </div>
+            <div class="glass-panel">
+              <div style="font-size: 13px; color: var(--text-muted);">CAREER EARNINGS</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--accent-gold);" id="stat-career-earnings">$10,000</div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; text-align: center; margin-top: 20px;" id="stat-career-row-2">
+            <div class="glass-panel">
+              <div style="font-size: 13px; color: var(--text-muted);">CAREER ASSISTS</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--accent-blue);" id="stat-career-assists">0</div>
+            </div>
+            <div class="glass-panel" id="stat-career-hattricks-box" style="display: none;">
+              <div style="font-size: 13px; color: var(--text-muted);">CAREER HATTRICKS</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--accent-gold);" id="stat-career-hattricks">0</div>
+            </div>
+            <div class="glass-panel" id="stat-career-role-box" style="display: none;">
+              <div style="font-size: 13px; color: var(--text-muted);" id="stat-career-role-label">CAREER DEFENSIVE ACTIONS</div>
+              <div style="font-size: 36px; font-weight: 900; color: var(--accent-gold);" id="stat-career-role-value">0</div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: MULTIPLIERS (WAGE MULTIPLIERS DASHBOARD) -->
+      <section id="page-multipliers" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header" style="justify-content: space-between; flex-wrap: wrap; gap: 14px;">
+            <h3 class="panel-title">📈 Salary Contract Multipliers</h3>
+            <div style="font-size: 18px; font-weight: 900; color: var(--primary);">Current Multiplier: <strong id="val-total-multiplier" style="color:var(--primary);">x1.0</strong></div>
+          </div>
+          <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            Grow your reputation to command massive contract wages! Multipliers are <strong>cumulative</strong> and apply directly to your contract proposals and renewal offers for the <strong>next season</strong> (your current salary remains fixed for this season).
+          </p>
+
+          <div style="background: rgba(0, 136, 255, 0.05); border: 1px solid var(--accent-blue); padding: 18px 24px; border-radius: 12px; margin-bottom: 24px;">
+            <div style="font-weight: 800; font-size: 15px; color:#fff; margin-bottom: 12px; border-bottom: 1px solid rgba(255,255,255,0.1); padding-bottom: 6px;">📋 Estimated Next Season Weekly Wages (Base × Multiplier):</div>
+            
+            <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; text-align: left;">
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">💺 Bench Division 2 (Base $4,500):</div>
+                <div style="font-size: 18px; font-weight: 900; color: #fff;" id="est-bench-d2">$4,500</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">🏢 Starter Division 2 (Base $19,500):</div>
+                <div style="font-size: 18px; font-weight: 900; color: #fff;" id="est-starter-d2">$19,500</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">💺 Bench Division 1 (Base $25,000):</div>
+                <div style="font-size: 18px; font-weight: 900; color: #fff;" id="est-bench-d1">$25,000</div>
+              </div>
+              <div>
+                <div style="font-size: 11px; color: var(--text-muted); font-weight: 700; text-transform: uppercase;">🏆 Starter Division 1 (Base $75,000):</div>
+                <div style="font-size: 18px; font-weight: 900; color: var(--accent-gold);" id="est-starter-d1">$75,000</div>
+              </div>
+            </div>
+          </div>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(240px, 1fr)); gap: 16px;" id="multipliers-list-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: BALLON D'OR News Tab -->
+      <section id="page-ballon" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">👑 Ballon d'Or Power Rankings</h3>
+          </div>
+          <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            The live race for the prestigious **Ballon d'Or** (the World Player of the Year)! Standings and percentage chances shift dynamically after every matchday based on: player OVR, trophy success (League, Domestic Cups, UCL, World Cup, Euros/Copa), and individual match ratings.
+          </p>
+
+          <!-- Pre-Start Screen -->
+          <div id="ballon-prestart-screen" style="display: none; text-align: center; padding: 40px 20px;">
+            <div style="font-size: 64px; margin-bottom: 16px;">👑</div>
+            <h4 style="font-size: 20px; font-weight: 800; color: #fff; margin-bottom: 8px;">Rankings Uninitialized</h4>
+            <p style="color: var(--text-muted); max-width: 480px; margin: 0 auto; line-height: 1.6;">
+              The first matchday of the season must be played to initialize the live Ballon d'Or Power Rankings! Complete your opening match to see the candidates.
+            </p>
+          </div>
+
+          <!-- Live Standings Table -->
+          <div id="ballon-live-screen" style="display: block;">
+            <div class="table-wrapper">
+              <table class="data-table" style="font-size: 13px;">
+                <thead>
+                  <tr>
+                    <th style="width: 50px; text-align: center;">Rank</th>
+                    <th>Player Name</th>
+                    <th>Club Name</th>
+                    <th style="width: 80px; text-align: center;">OVR</th>
+                    <th style="width: 100px; text-align: center; color: var(--primary);">Chance</th>
+                  </tr>
+                </thead>
+                <tbody id="table-ballon-body">
+                  <!-- Populated via JS -->
+                </tbody>
+              </table>
+            </div>
+
+            <div style="background: rgba(255,255,255,0.03); border: 1px solid rgba(255,255,255,0.08); border-radius: 12px; padding: 16px; margin-top: 24px;">
+              <h4 style="font-size: 13px; font-weight: 800; color: var(--accent-gold); margin-bottom: 6px; text-transform: uppercase;">ℹ️ HOW TO ENTER & WIN</h4>
+              <ul style="font-size: 12px; color: #cbd5e1; padding-left: 18px; margin: 0; line-height: 1.8; text-align: left;">
+                <li><strong>Division 1 Eligibility:</strong> You must be playing for a <strong>Division 1 (Tier 1) Club</strong>. Benched or Division 2 players cannot enter the list.</li>
+                <li><strong>OVR Standard:</strong> Reaching <strong>OVR >= 88</strong> guarantees you a spot in the Top 5 rankings.</li>
+                <li><strong>Silverware & Awards:</strong> Winning tournaments (UCL, Cups, Leagues, World Cup) and claiming **Golden Boot Awards** dramatically boost your percentage chance.</li>
+                <li>The winner is officially announced at the very end of the season campaign during the summer break!</li>
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: SETTINGS -->
+      <section id="page-settings" class="view-page">
+        <div class="glass-panel" style="max-width: 600px; margin: 0 auto 20px;">
+          <div class="panel-header">
+            <h3 class="panel-title">⚙️ Game & Camera Settings</h3>
+          </div>
+          <div class="form-group"><label class="form-label">Simulation Default Speed</label><select class="form-select" onchange="app.matchSettings.simSpeed=Number(this.value)"><option value="0.25">0.25x</option><option value="0.5">0.5x</option><option value="0.75">0.75x</option><option value="1" selected>1x</option><option value="1.5">1.5x</option><option value="2">2x</option><option value="2.5">2.5x</option><option value="3">3x</option></select></div>
+          <div class="form-group"><label class="form-label"><input type="checkbox" id="setting-skip-sim" onchange="app.matchSettings.allowSkipSim=this.checked"> Enable “Skip to Full Time” button</label></div>
+        </div>
+
+        <!-- Cheat Mode Panel -->
+        <div class="glass-panel" id="settings-cheat-panel" style="max-width: 600px; margin: 0 auto 20px;">
+          <div class="panel-header">
+            <h3 class="panel-title">😈 Developer Cheat Mode</h3>
+          </div>
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">Cheat Mode</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Enable manual goal injection during simulated matches.</div>
+            </div>
+            <button class="btn btn-secondary" id="btn-cheat-mode" onclick="app.toggleCheatMode()" style="min-width: 140px; font-weight: 900;">Disabled</button>
+          </div>
+          <div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);margin-top:10px"><div><div style="font-weight:700;font-size:14px">Show Mobile Cheat Buttons</div><div style="font-size:12px;color:var(--text-muted)">Show touch controls during a match.</div></div><button class="btn btn-secondary" id="btn-cheat-buttons" onclick="app.toggleCheatButtons()">Disabled</button></div>
+
+<div style="display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-top:1px solid rgba(255,255,255,.06);margin-top:10px"><div><div style="font-weight:700;font-size:14px">No Goals Simulation</div><div style="font-size:12px;color:var(--text-muted)">Only cheat keybinds can create goals.</div></div><button class="btn btn-secondary" id="btn-no-goals" onclick="app.toggleNoGoalSimulation()">Disabled</button></div>
+
+          <div style="display: flex; justify-content: space-between; align-items: center; padding: 10px 0; border-top: 1px solid rgba(255,255,255,0.06); margin-top: 10px;">
+            <div>
+              <div style="font-weight: 700; font-size: 14px;">Cheating Mode Keybinds</div>
+              <div style="font-size: 12px; color: var(--text-muted); margin-top: 4px;">Configure hotkeys for simulating goals and subbing-in during matches.</div>
+            </div>
+            <button class="btn btn-primary btn-sm" onclick="app.openCheatKeybindsModal()" style="min-width: 140px; font-weight: 900;">Configure ⌨️</button>
+          </div>
+        </div>
+
+        <!-- Save, Load & Reset Career Panel -->
+        <div class="glass-panel" style="max-width: 600px; margin: 0 auto;">
+          <div class="panel-header">
+            <h3 class="panel-title">💾 Save Data & Reset Career</h3>
+          </div>
+          <div style="display: flex; flex-direction: column; gap: 14px;">
+            <button class="btn btn-primary btn-lg" onclick="app.saveCareer(true)">Save Career Game 💾</button>
+            <button class="btn btn-secondary btn-lg" onclick="app.loadCareer()">Load Saved Career 📂</button>
+            <button class="btn btn-danger btn-lg" onclick="app.resetCareer()">Start Over / Reset Game 🔄</button>
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: TROPHIES CABINET -->
+      <section id="page-trophies" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">🏆 Personal Trophy Cabinet</h3>
+          </div>
+          <p style="color: var(--text-muted); line-height: 1.6; margin-bottom: 24px;">
+            Welcome to your Hall of Fame! As your career progresses, any silverware and accolades you win will light up here in golden glory. Can you go down as the ultimate GOAT?
+          </p>
+
+          <div style="display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 20px;" id="trophy-cabinet-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+      <!-- PAGE: PAST SEASONS HISTORY -->
+      <section id="page-pastseasons" class="view-page">
+        <div class="glass-panel">
+          <div class="panel-header">
+            <h3 class="panel-title">📜 Past Seasons Career History</h3>
+          </div>
+          <div id="past-seasons-container">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+      </section>
+
+    <!-- ============ MANAGER MODE PAGES ============ -->
+
+    <!-- PAGE: MANAGER DASHBOARD -->
+    <section id="page-m-dashboard" class="view-page m-page">
+      <div class="grid-dashboard" style="grid-template-columns: minmax(0,1fr) minmax(0,380px);">
+        <div>
+          <div class="glass-panel" id="m-next-match-box">
+            <!-- Populated via JS -->
+          </div>
+        </div>
+        <div>
+          <div class="glass-panel">
+            <div class="panel-header">
+              <h3 class="panel-title">📊 Season Summary</h3>
+              <button class="btn btn-secondary btn-sm" onclick="managerUI.saveManagerGame(true)">💾 Save</button>
+            </div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Matches Played:</span><strong style="color:var(--accent-gold);" id="m-sum-matches">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Wins / Draws / Losses:</span><strong id="m-sum-wins">0 / 0 / 0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Goals For:</span><strong style="color:var(--primary);" id="m-sum-goals">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Goals Against:</span><strong style="color:#ef4444;" id="m-sum-ga">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Shots Taken:</span><strong id="m-sum-shots">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Defensive Actions:</span><strong id="m-sum-def">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Goalkeeper Saves:</span><strong id="m-sum-saves">0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Avg Team Rating:</span><strong style="color:var(--accent-gold);" id="m-sum-rating">0.0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Season Profit:</span><strong style="color:var(--primary);" id="m-sum-profit">$0</strong></div>
+            <div style="display:flex;justify-content:space-between;margin-bottom:6px;"><span>Bank Balance:</span><strong style="color:var(--accent-gold);" id="m-sum-bank">$0</strong></div>
+            <div style="display:flex;justify-content:space-between;"><span>Team Strength:</span><strong id="m-sum-strength">0 OVR</strong></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: MANAGER TEAM -->
+    <section id="page-m-team" class="view-page m-page">
+      <div class="glass-panel">
+        <div class="panel-header" style="justify-content:space-between;flex-wrap:wrap;gap:10px;">
+          <h3 class="panel-title">👥 Team Management</h3>
+          <select id="m-team-view" class="btn btn-secondary btn-sm" style="width:160px;padding:6px 12px;border-radius:8px;font-weight:700;cursor:pointer;height:34px;background:rgba(12,21,36,0.85);border:1px solid rgba(255,255,255,0.15);color:#fff;">
+            <option value="stats" selected>📊 Stats</option>
+            <option value="formation">🧭 Formation</option>
+          </select>
+        </div>
+        <div id="m-team-stats-view">
+          <div class="table-wrapper">
+            <table class="data-table">
+              <thead>
+                <tr><th>Pos</th><th>Player Name</th><th>OVR</th><th>Age</th><th style="text-align:center;color:var(--accent-gold);">Matches</th><th style="text-align:center;color:var(--primary);">Goals</th><th style="text-align:center;color:var(--accent-blue);">Assists</th><th style="text-align:center;color:var(--accent-gold);">Role Stat</th><th>Contract</th></tr>
+              </thead>
+              <tbody id="m-team-stats-body"></tbody>
+            </table>
+          </div>
+        </div>
+        <div id="m-team-formation-view" style="display:none;">
+          <div id="m-formation-container"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: MANAGER PLAYER SIGNING -->
+    <section id="page-m-signings" class="view-page m-page">
+      <div class="glass-panel">
+        <div class="panel-header"><h3 class="panel-title">✍️ Player Signing Market</h3></div>
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:12px;margin-bottom:16px;padding:14px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);border-radius:12px;">
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">🔍 Name</label><input class="form-input" id="m-sig-name" placeholder="Search name..." style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">💰 Market Value Min</label><input class="form-input" id="m-sig-mv-min" type="number" value="0" style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">💰 Market Value Max</label><input class="form-input" id="m-sig-mv-max" type="number" value="500000000" style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">🎂 Age Min</label><input class="form-input" id="m-sig-age-min" type="number" value="16" style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">🎂 Age Max</label><input class="form-input" id="m-sig-age-max" type="number" value="45" style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">⚽ Position</label>
+            <select class="form-select" id="m-sig-pos" style="margin-top:4px;"><option value="">All</option><option>ST</option><option>LW</option><option>RW</option><option>CAM</option><option>CM</option><option>CB</option><option>LB</option><option>RB</option><option>GK</option></select>
+          </div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">📈 OVR Min</label><input class="form-input" id="m-sig-ovr-min" type="number" value="50" style="margin-top:4px;"></div>
+          <div><label style="font-size:12px;font-weight:700;color:var(--text-muted);">📈 OVR Max</label><input class="form-input" id="m-sig-ovr-max" type="number" value="99" style="margin-top:4px;"></div>
+        </div>
+        <div class="table-wrapper">
+          <table class="data-table">
+            <thead><tr><th>Player</th><th>Pos</th><th>OVR</th><th>Age</th><th>Market Value</th><th>Actions</th></tr></thead>
+            <tbody id="m-signing-results"></tbody>
+          </table>
+        </div>
+      </div>
+    </section>
+
+    <!-- PAGE: MANAGER SPONSORS -->
+    <section id="page-m-sponsors" class="view-page m-page">
+      <div class="glass-panel" style="margin-bottom:16px;">
+        <div class="panel-header"><h3 class="panel-title">🤝 Sponsors Paying Us</h3></div>
+        <div id="m-sponsors-in"></div>
+      </div>
+      <div class="glass-panel">
+        <div class="panel-header"><h3 class="panel-title">📣 Sponsors We Pay (Promote Our Club)</h3></div>
+        <div id="m-sponsors-out"></div>
+      </div>
+    </section>
+
+    <!-- PAGE: MANAGER STADIUM -->
+    <section id="page-m-stadium" class="view-page m-page">
+      <div class="glass-panel">
+        <div class="panel-header"><h3 class="panel-title">🏟️ Stadium Management</h3></div>
+        <div id="m-stadium-summary"></div>
+        <h4 style="color:var(--accent-gold);margin:18px 0 12px;">⬆️ Stadium Upgrades</h4>
+        <div id="m-stadium-upgrades"></div>
+      </div>
+    </section>
+
+    </main>
+
+  </div>
+
+  <!-- MANAGER CREATION MODAL -->
+  <div class="modal-overlay" id="modal-manager-creation">
+    <div class="modal-box">
+      <h2 style="font-size:24px;font-weight:900;margin-bottom:20px;color:var(--accent-gold);">👔 Create Your Manager</h2>
+      <form id="manager-creation-form">
+        <div class="form-group">
+          <label class="form-label">Manager Name</label>
+          <input type="text" class="form-input" id="m-create-name" placeholder="Manager name..." required>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Nationality</label>
+          <select class="form-select" id="m-create-nationality" style="flex:1"></select>
+        </div>
+        <div class="form-group">
+          <label class="form-label">Club To Manage <span id="m-create-club-stars" style="color:var(--accent-gold);"></span></label>
+          <select class="form-select" id="m-create-club"></select>
+        </div>
+
+        <!-- Manager Attributes -->
+        <div style="background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.15);border-radius:12px;padding:16px;margin-bottom:20px;">
+          <div style="font-size:14px;font-weight:800;color:var(--primary);text-transform:uppercase;margin-bottom:14px;">⚙️ Manager Attributes</div>
+
+          <div class="form-group">
+            <label class="form-label">Age: <strong id="m-val-age" style="color:#fff;">45</strong> y/o <span style="color:var(--text-muted);font-size:12px;">(35 - 50)</span></label>
+            <input type="range" class="form-range" id="m-slider-age" min="35" max="50" value="45" oninput="managerUI.onManagerAgeChange(this.value)">
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">📅 Starting Season</label>
+            <select class="form-select" id="m-create-season"></select>
+          </div>
+
+          <div class="form-group">
+            <label class="form-label">💼 Starting Money (Club Budget)</label>
+            <input type="number" class="form-input" id="m-create-budget" step="1000000" min="0">
+            <div style="font-size:12px;color:var(--accent-gold);margin-top:4px;" id="m-create-budget-rec">Recommended: $0</div>
+          </div>
+
+          <div class="form-group" style="margin-bottom:0;">
+            <label class="form-label">🎯 Manager Score <span style="color:var(--text-muted);font-size:12px;">(1 - 99, random)</span></label>
+            <div style="display:flex;gap:10px;align-items:center;">
+              <div id="m-manager-score" style="font-size:34px;font-weight:900;color:var(--accent-gold);min-width:70px;">70</div>
+              <div style="flex:1;font-size:12px;color:var(--text-muted);" id="m-manager-score-desc">Solid — modest boost</div>
+              <button type="button" class="btn btn-secondary" onclick="managerUI.rerollManagerScore()">🎲 Reroll</button>
+            </div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" onclick="managerUI.submitManagerCreation()">Start Manager Career 🚀</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- MANAGER: PLAYER FULL STATS MODAL -->
+  <div class="modal-overlay" id="modal-mplayer-stats">
+    <div class="modal-box" style="max-width: 760px;">
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:16px;color:var(--primary);">📊 Player Profile</h2>
+      <div id="mplayer-stats-body"></div>
+      <button type="button" class="btn btn-primary" style="width:100%;margin-top:16px;" onclick="app.closeModal('modal-mplayer-stats')">Close</button>
+    </div>
+  </div>
+
+  <!-- MANAGER: CONTRACT OFFER MODAL -->
+  <div class="modal-overlay" id="modal-moffer">
+    <div class="modal-box" style="max-width: 480px;">
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:16px;color:var(--primary);">✍️ Contract Offer</h2>
+      <div id="moffer-body"></div>
+      <button type="button" class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="app.closeModal('modal-moffer')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MANAGER: SPONSOR-IN CHANGE MODAL -->
+  <div class="modal-overlay" id="modal-spin-change">
+    <div class="modal-box" style="max-width: 440px;">
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:16px;color:var(--primary);">✍️ Change Sponsor Offer</h2>
+      <div id="spin-change-body"></div>
+      <button type="button" class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="app.closeModal('modal-spin-change')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MANAGER: SPONSOR-OUT OFFER MODAL -->
+  <div class="modal-overlay" id="modal-spout-offer">
+    <div class="modal-box" style="max-width: 440px;">
+      <h2 style="font-size:22px;font-weight:900;margin-bottom:16px;color:var(--primary);">📣 Sponsor Proposal</h2>
+      <div id="spout-offer-body"></div>
+      <button type="button" class="btn btn-secondary" style="width:100%;margin-top:12px;" onclick="app.closeModal('modal-spout-offer')">Cancel</button>
+    </div>
+  </div>
+
+  <!-- MANAGER: PLAYER TOOLTIP -->
+  <div id="m-tooltip" style="display:none;position:fixed;z-index:10050;background:rgba(8,16,32,0.97);border:1px solid var(--primary);border-radius:10px;padding:12px 14px;max-width:260px;pointer-events:none;box-shadow:0 10px 30px rgba(0,0,0,0.6);"></div>
+
+  <!-- PLAYER CREATION MODAL -->
+  <div class="modal-overlay" id="modal-creation">
+    <div class="modal-box">
+      <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 20px; color: var(--primary);">⭐ Create Your Player</h2>
+      <form id="creation-form">
+        <div class="form-group">
+          <label class="form-label">Player Name</label>
+          <input type="text" class="form-input" id="create-name" placeholder="Proposing random name..." required>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Nationality</label>
+          <div style="display:flex;gap:10px;align-items:center"><span id="create-nationality-flag" style="display:flex;align-items:center;min-width:32px"></span><select class="form-select" id="create-nationality" style="flex:1">
+            <!-- Populated via JS -->
+          </select></div>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Starting Club</label>
+          <select class="form-select" id="create-club">
+            <!-- Populated via JS -->
+          </select>
+        </div>
+
+        <div class="form-group">
+          <label class="form-label">Career Professionality & Growth Potential</label>
+          <select class="form-select" id="create-professionality" onchange="app.updatePreviewOvr()">
+            <option value="inhuman">⚡ INHUMAN - Max 116 OVR, Unmatched Growth</option>
+            <option value="goat">🐐 GOAT Level - Max 99 OVR, Extreme Growth</option>
+            <option value="pro" selected>🌟 PRO Level - Max 94 OVR, Fast Growth</option>
+            <option value="good">⭐ GOOD Level - Max 89 OVR, Balanced Growth</option>
+            <option value="avg">🏃 AVG Level - Max 84 OVR, Average Growth</option>
+            <option value="under_avg">👟 Under Average - Max 79 OVR, Slow Growth & Faster Decay</option>
+          </select>
+        </div>
+
+        <!-- CUSTOMIZATION BUTTONS BELOW STARTING CLUB -->
+        <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 20px;">
+          <button type="button" class="btn btn-secondary" onclick="app.openAttributesModal()">⚙️ Attributes</button>
+          <button type="button" class="btn btn-secondary" onclick="app.openAppearanceModal()">🎨 Appearance</button>
+        </div>
+
+        <!-- PLAYER SUMMARY BADGE -->
+        <div style="background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.15); border-radius: 12px; padding: 14px; margin-bottom: 20px; text-align: center;">
+          <div style="font-size: 12px; color: #94a3b8; font-weight: 700; text-transform: uppercase; margin-bottom: 6px;">Player Profile Summary</div>
+          <div style="display: flex; justify-content: space-around; align-items: center;">
+            <div><span style="color:#94a3b8;">POS:</span> <strong id="summary-pos" style="color:var(--primary);">ST</strong></div>
+            <div><span style="color:#94a3b8;">AGE:</span> <strong id="summary-age">17</strong></div>
+            <div><span style="color:#94a3b8;">HEIGHT:</span> <strong id="summary-height">180 cm</strong></div>
+            <div><span style="color:#94a3b8;">OVR:</span> <strong id="summary-ovr" style="color:var(--accent-gold); font-size:18px;">72</strong></div>
+          </div>
+        </div>
+
+        <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" onclick="app.submitPlayerCreation()">Start Player Career 🚀</button>
+      </form>
+    </div>
+  </div>
+
+  <!-- ATTRIBUTES CUSTOMIZER SUB-MODAL -->
+  <div class="modal-overlay" id="modal-attributes">
+    <div class="modal-box" style="max-width: 600px;">
+      <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 16px; color: var(--primary);">⚙️ Player Position & Attributes</h2>
+
+      <!-- Position Selector -->
+      <div class="form-group">
+        <label class="form-label">Position / Role</label>
+        <select class="form-select" id="create-position" onchange="app.onPositionChange(this.value)">
+          <option value="ST" selected>ST — Striker (Finishing & Pace)</option>
+          <option value="CAM">CAM — Attacking Midfielder (Passing & Dribbling)</option>
+          <option value="CM">CM — Central Midfielder (Passing & Stamina)</option>
+          <option value="RW">RW — Right Winger (Pace & Dribbling)</option>
+          <option value="LW">LW — Left Winger (Pace & Dribbling)</option>
+          <option value="CB">CB — Center Back (Defending & Physical)</option>
+          <option value="LB">LB — Left Back (Pace & Defending)</option>
+          <option value="RB">RB — Right Back (Pace & Defending)</option>
+          <option value="GK">GK — Goalkeeper (Diving & Handling)</option>
+        </select>
+        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Selecting a position sets recommended baseline stats for that role.</div>
+      </div>
+
+      <!-- Age & Height -->
+      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 20px;">
+        <div class="form-group">
+          <label class="form-label">Starting Age: <strong id="val-age" style="color:#fff;">17</strong> y/o</label>
+          <input type="range" class="form-range" id="slider-age" min="16" max="20" value="17" oninput="app.onAgeChange(this.value)">
+        </div>
+        <div class="form-group">
+          <label class="form-label">Height: <strong id="val-height" style="color:#fff;">180</strong> cm</label>
+          <input type="range" class="form-range" id="slider-height" min="160" max="205" value="180" oninput="app.onHeightChange(this.value)">
+        </div>
+      </div>
+
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label">📅 Career Starting Season Year</label>
+        <select class="form-select" id="create-start-year" onchange="app.onStartYearChange(this.value)">
+          <!-- Populated dynamically via JS from 1950 to 2050 -->
+        </select>
+        <div style="font-size: 12px; color: #94a3b8; margin-top: 4px;">Choose the exact year in which your player career begins.</div>
+      </div>
+
+      <!-- Attribute Sliders -->
+      <div style="font-size: 14px; font-weight: 800; color: var(--primary); text-transform: uppercase; margin-bottom: 12px;">Skill Attributes (1 - 130)</div>
+      
+      <div class="attr-slider-row">
+        <label>⚡ Pace: <span id="val-pace">75</span></label>
+        <input type="range" id="slider-pace" min="1" max="130" value="75" oninput="app.onAttrSliderChange('pace', this.value)">
+      </div>
+      <div class="attr-slider-row">
+        <label>🎯 Shooting: <span id="val-shooting">75</span></label>
+        <input type="range" id="slider-shooting" min="1" max="130" value="75" oninput="app.onAttrSliderChange('shooting', this.value)">
+      </div>
+      <div class="attr-slider-row">
+        <label>⚽ Passing: <span id="val-passing">65</span></label>
+        <input type="range" id="slider-passing" min="1" max="130" value="65" oninput="app.onAttrSliderChange('passing', this.value)">
+      </div>
+      <div class="attr-slider-row">
+        <label>🏃 Dribbling: <span id="val-dribbling">72</span></label>
+        <input type="range" id="slider-dribbling" min="1" max="130" value="72" oninput="app.onAttrSliderChange('dribbling', this.value)">
+      </div>
+      <div class="attr-slider-row">
+        <label>🛡️ Defending: <span id="val-defending">40</span></label>
+        <input type="range" id="slider-defending" min="1" max="130" value="40" oninput="app.onAttrSliderChange('defending', this.value)">
+      </div>
+      <div class="attr-slider-row">
+        <label>💪 Physical: <span id="val-physical">72</span></label>
+        <input type="range" id="slider-physical" min="1" max="130" value="72" oninput="app.onAttrSliderChange('physical', this.value)">
+      </div>
+      <div class="attr-slider-row" id="container-slider-positioning">
+        <label>🎯 Attack Positioning: <span id="val-positioning">70</span></label>
+        <input type="range" id="slider-positioning" min="1" max="130" value="70" oninput="app.onAttrSliderChange('positioning', this.value)">
+      </div>
+      <div class="attr-slider-row" id="container-slider-def_positioning">
+        <label>🛡️ Def Positioning: <span id="val-def_positioning">70</span></label>
+        <input type="range" id="slider-def_positioning" min="1" max="130" value="70" oninput="app.onAttrSliderChange('def_positioning', this.value)">
+      </div>
+      <div class="attr-slider-row" id="container-slider-diving">
+        <label>🧤 Goalkeeper Diving: <span id="val-diving">70</span></label>
+        <input type="range" id="slider-diving" min="1" max="130" value="70" oninput="app.onAttrSliderChange('diving', this.value)">
+      </div>
+
+      <div style="display: flex; justify-content: space-between; align-items: center; margin-top: 20px; background: rgba(0,255,136,0.1); border: 1px solid var(--primary); padding: 14px 20px; border-radius: 10px;">
+        <span style="font-weight: 800; text-transform: uppercase;">Calculated OVR Rating:</span>
+        <span id="preview-calculated-ovr" style="font-size: 26px; font-weight: 900; color: var(--accent-gold);">72</span>
+      </div>
+
+      <button type="button" class="btn btn-primary" style="width: 100%; margin-top: 16px;" onclick="app.closeAttributesModal()">Done & Apply Attributes ✅</button>
+    </div>
+  </div>
+
+  <!-- APPEARANCE SUB-MODAL STUDIO -->
+  <div class="modal-overlay" id="modal-appearance">
+    <div class="modal-box" style="max-width: 620px;">
+      <h2 style="font-size: 22px; font-weight: 900; margin-bottom: 16px; color: var(--primary); text-transform: uppercase;">💈 Player Appearance Studio</h2>
+
+      <!-- Live 3D Avatar Preview Box -->
+      <div id="appearance-avatar-preview" style="background: linear-gradient(135deg, #0a1628 0%, #1e293b 100%); border: 2px solid var(--primary); border-radius: 16px; padding: 20px; text-align: center; margin-bottom: 20px; display: flex; flex-direction: column; align-items: center; justify-content: center; box-shadow: 0 8px 25px rgba(0,255,136,0.15);">
+        <!-- Avatar Graphic Rendered via JS -->
+        <div id="avatar-head-display" style="position: relative; width: 100px; height: 120px; margin-bottom: 8px; display: flex; align-items: center; justify-content: center;">
+          <!-- Hair & Head Layer -->
+        </div>
+        <div id="avatar-style-name" style="font-size: 16px; font-weight: 900; color: #fff; letter-spacing: 1px;">Short Fade</div>
+      </div>
+
+      <!-- Hair Style Carousel Selector -->
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" style="display: flex; justify-content: space-between;">
+          <span>💈 Hair Style (<span id="hair-style-count">1 / 35</span>)</span>
+          <span style="color: var(--primary);" id="hair-style-label">Short Fade</span>
+        </label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="btn btn-secondary" style="padding: 10px 18px;" onclick="app.cycleHairStyle(-1)">◀ Prev</button>
+          <select class="form-select" id="create-hair-style-select" style="flex: 1;" onchange="app.selectHairStyle(parseInt(this.value))">
+            <!-- 35 Hair Options Populated via JS -->
+          </select>
+          <button type="button" class="btn btn-secondary" style="padding: 10px 18px;" onclick="app.cycleHairStyle(1)">Next ▶</button>
+        </div>
+      </div>
+
+      <!-- Facial Hair Carousel Selector -->
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label" style="display: flex; justify-content: space-between;">
+          <span>🧔 Facial Hair (<span id="facial-hair-style-count">1 / 10</span>)</span>
+          <span style="color: var(--accent-gold);" id="facial-hair-style-label">None</span>
+        </label>
+        <div style="display: flex; gap: 10px; align-items: center;">
+          <button type="button" class="btn btn-secondary" style="padding: 10px 18px;" onclick="app.cycleFacialHair(-1)">◀ Prev</button>
+          <select class="form-select" id="create-facial-hair-select" style="flex: 1;" onchange="app.selectFacialHairStyle(this.value)">
+            <!-- 10 Facial Hair Options Populated via JS -->
+          </select>
+          <button type="button" class="btn btn-secondary" style="padding: 10px 18px;" onclick="app.cycleFacialHair(1)">Next ▶</button>
+        </div>
+      </div>
+
+      <!-- Hair Color Swatch Grid -->
+      <div class="form-group" style="margin-bottom: 20px;">
+        <label class="form-label">🎨 Hair Color (12 Shades)</label>
+        <div id="hair-color-swatches" style="display: grid; grid-template-columns: repeat(6, 1fr); gap: 10px; margin-top: 8px;">
+          <!-- Swatches rendered via JS -->
+        </div>
+      </div>
+
+      <!-- Skin Tone Swatch Grid -->
+      <div class="form-group" style="margin-bottom: 24px;">
+        <label class="form-label">✋ Skin Tone (8 Tones)</label>
+        <div id="skin-tone-swatches" style="display: grid; grid-template-columns: repeat(8, 1fr); gap: 8px; margin-top: 8px;">
+          <!-- Swatches rendered via JS -->
+        </div>
+      </div>
+
+      <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" onclick="app.closeAppearanceModal()">Done & Apply Appearance ✅</button>
+    </div>
+  </div>
+
+
+  <!-- CHEATING MODE KEYBINDS MODAL -->
+  <div class="modal-overlay" id="modal-cheat-keybinds" style="z-index: 10005;">
+    <div class="modal-box" style="max-width: 480px; text-align: left;">
+      <h2 style="font-size: 24px; font-weight: 900; margin-bottom: 14px; color: var(--accent-gold); text-align: center;">⌨️ Cheating Hotkeys</h2>
+      <p style="color: var(--text-muted); font-size: 13px; line-height: 1.5; margin-bottom: 20px; text-align: center;">
+        Configure hotkeys to cheat during simulated matches. Click a field, then press any key to rebind!
+      </p>
+      
+      <div style="display: flex; flex-direction: column; gap: 14px;">
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 14px; color: #fff;">⚽ Score Own Player Goal:</span>
+          <button id="rebind-own-goal" onclick="app.startRebind('own_goal')" class="btn btn-secondary" style="min-width: 120px; font-family: monospace; font-weight: bold; font-size: 14px; background: rgba(255,255,255,0.05); color: var(--primary);">M</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 14px; color: #fff;">🤝 Score Teammate Goal:</span>
+          <button id="rebind-team-goal" onclick="app.startRebind('team_goal')" class="btn btn-secondary" style="min-width: 120px; font-family: monospace; font-weight: bold; font-size: 14px; background: rgba(255,255,255,0.05); color: var(--accent-blue);">P</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center;">
+          <span style="font-weight: 700; font-size: 14px; color: #fff;">🟥 Score Opponent Goal:</span>
+          <button id="rebind-opp-goal" onclick="app.startRebind('opp_goal')" class="btn btn-secondary" style="min-width: 120px; font-family: monospace; font-weight: bold; font-size: 14px; background: rgba(255,255,255,0.05); color: #ef4444;">O</button>
+        </div>
+        <div style="display: flex; justify-content: space-between; align-items: center; border-top: 1px solid rgba(255,255,255,0.06); padding-top: 14px; margin-top: 4px;">
+          <span style="font-weight: 700; font-size: 14px; color: #fff;">🔄 Instant Bench Swap-In:</span>
+          <button id="rebind-sub-in" onclick="app.startRebind('sub_in')" class="btn btn-secondary" style="min-width: 120px; font-family: monospace; font-weight: bold; font-size: 14px; background: rgba(255,255,255,0.05); color: var(--accent-gold);">L</button>
+        </div>
+      </div>
+      
+      <div style="margin-top: 24px; display: flex; gap: 10px;">
+        <button type="button" class="btn btn-secondary" style="flex: 1;" onclick="app.resetCheatKeybinds()">Reset Defaults</button>
+        <button type="button" class="btn btn-primary" style="flex: 1;" onclick="app.closeModal('modal-cheat-keybinds')">Save & Done</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- IN-GAME RESULT / QUICK SIM MODAL -->
+  <div class="modal-overlay" id="modal-game-notice">
+    <div class="modal-box" style="max-width: 560px; text-align: center;">
+      <h2 id="game-notice-title" style="font-size: 26px; font-weight: 900; margin-bottom: 14px; color: var(--primary);">Match Result</h2>
+      <div id="game-notice-body" style="color: var(--text-muted); line-height: 1.7; font-size: 16px; margin-bottom: 20px;"></div>
+      <button type="button" class="btn btn-primary btn-lg" style="width: 100%;" onclick="app.closeGameNotice()">Continue</button>
+    </div>
+  </div>
+
+
+
+  <!-- App Scripts -->
+  <script src="Appearance/manifest.js"></script>
+  <script src="js/names.js?v=3.0.0"></script>
+  <script src="js/career.js?v=3.0.0"></script>
+  <script src="js/leagues.js?v=3.0.0"></script>
+  <script src="js/manager.js?v=3.0.0"></script>
+  <script src="js/app.js?v=3.0.0"></script>
+</body>
+</html>
